@@ -12,16 +12,21 @@ const storage = {
   }
 };
 
-const stops = ['Harbor Point', 'Central Station', 'North Loop', 'River Market', 'Old Town', 'East Gardens', 'West Avenue', 'Civic Hall', 'Hilltop'];
+const stops = ['Kakinada', 'Samalkota', 'Pithapuram', 'Peddapuram', 'Anaparthi', 'Rajahmundry', 'Amalapuram', 'Tuni', 'Annavaram', 'Yanam', 'Mandapeta', 'Ramachandrapuram', 'Visakhapatnam'];
 const routes = {
-  12: { total: 30, occupied: 12, from: 'Harbor Point', via: 'Central Station', to: 'North Loop', stop: '08', time: '06:45', minutes: 3, duration: 18, fare: 20, accessible: true, tags: ['frequent', 'accessible'] },
-  7: { total: 30, occupied: 21, from: 'River Market', via: 'Old Town', to: 'East Gardens', stop: '14', time: '06:50', minutes: 8, duration: 24, fare: 20, accessible: false, tags: ['frequent'] },
-  21: { total: 40, occupied: 15, from: 'West Avenue', via: 'Civic Hall', to: 'Hilltop', stop: '03', time: '06:53', minutes: 11, duration: 16, fare: 25, accessible: true, tags: ['accessible'] }
+  12: { total: 30, occupied: 12, from: 'Kakinada', via: 'Anaparthi', to: 'Rajahmundry', stop: '08', time: '06:45', minutes: 3, duration: 18, fare: 20, accessible: true, tags: ['frequent', 'accessible'] },
+  7: { total: 30, occupied: 21, from: 'Kakinada', via: 'Samalkota', to: 'Pithapuram', stop: '14', time: '06:50', minutes: 8, duration: 24, fare: 20, accessible: false, tags: ['frequent'] },
+  21: { total: 40, occupied: 15, from: 'Kakinada', via: 'Ramachandrapuram', to: 'Amalapuram', stop: '03', time: '06:53', minutes: 11, duration: 16, fare: 25, accessible: true, tags: ['accessible'] },
+  15: { total: 32, occupied: 14, from: 'Kakinada', via: 'Pithapuram', to: 'Tuni', stop: '06', time: '07:10', minutes: 12, duration: 28, fare: 22, accessible: true, tags: ['frequent', 'accessible'] },
+  9: { total: 30, occupied: 16, from: 'Rajahmundry', via: 'Anaparthi', to: 'Kakinada', stop: '11', time: '07:25', minutes: 9, duration: 19, fare: 20, accessible: false, tags: ['frequent'] },
+  18: { total: 36, occupied: 18, from: 'Kakinada', via: 'Tuni', to: 'Visakhapatnam', stop: '05', time: '07:40', minutes: 15, duration: 33, fare: 35, accessible: true, tags: ['accessible', 'frequent'] },
+  25: { total: 32, occupied: 17, from: 'Kakinada', via: 'Amalapuram', to: 'Yanam', stop: '09', time: '08:00', minutes: 18, duration: 26, fare: 24, accessible: false, tags: ['frequent'] },
+  31: { total: 28, occupied: 13, from: 'Peddapuram', via: 'Samalkota', to: 'Kakinada', stop: '12', time: '08:15', minutes: 20, duration: 22, fare: 18, accessible: true, tags: ['accessible'] }
 };
 const alerts = [
-  { type: 'normal', label: 'Network operating normally', copy: 'All routes are running to schedule.' },
-  { type: 'delay', label: 'Route 07', copy: 'Minor delay near Old Town.' },
-  { type: 'change', label: 'Route 21', copy: 'Temporary stop change at Civic Hall.' }
+  { type: 'normal', label: 'Network operating normally', copy: 'All Kakinada-area routes are running to schedule.' },
+  { type: 'delay', label: 'Route 07', copy: 'Minor delay near Samalkota.' },
+  { type: 'change', label: 'Route 21', copy: 'Temporary stop change at Ramachandrapuram.' }
 ];
 const defaultSettings = { theme: 'dark', highContrast: false, largeText: false, notifications: true, accessibleFirst: false };
 let settings = { ...defaultSettings, ...storage.get('superbus-settings', {}) };
@@ -84,7 +89,7 @@ function routeResult(routeNumber) {
   const available = route.total - route.occupied;
   const card = document.createElement('article');
   card.className = 'planner-result';
-  card.innerHTML = `<div><strong>BUS ${routeNumber}</strong><p>${route.from} &rarr; ${route.via} &rarr; ${route.to}</p></div><span>${route.duration} min<br>₹${route.fare}<br>${available} seats available</span><button class="text-button planner-view-route" data-route="${routeNumber}" type="button">View Bus</button>`;
+  card.innerHTML = `<div><strong>BUS ${routeNumber}</strong><p>${route.from} &rarr; ${route.to}</p><small>Via ${route.via}</small></div><span>${route.duration} min<br>₹${route.fare}<br>${available} seats available</span><button class="text-button planner-view-route" data-route="${routeNumber}" type="button">View Bus</button>`;
   return card;
 }
 
@@ -214,7 +219,11 @@ function renderFavorites() {
   });
   const target = $('#favorites-list');
   if (!target) return;
-  target.innerHTML = favorites.length ? favorites.map((number) => `<button class="favorite-item" data-route="${number}" type="button">★ Bus ${number}<span>Remove</span></button>`).join('') : '<p class="empty-state">Star a route to save it here.</p>';
+  target.innerHTML = favorites.length ? favorites.map((number) => {
+    const route = routes[number];
+    const label = route ? `${route.from} → ${route.to}` : `Bus ${number}`;
+    return `<button class="favorite-item" data-route="${number}" type="button">★ ${label}<span>Remove</span></button>`;
+  }).join('') : '<p class="empty-state">Star a route to save it here.</p>';
   $$('.favorite-item', target).forEach((button) => button.addEventListener('click', () => toggleFavorite(button.dataset.route)));
 }
 
