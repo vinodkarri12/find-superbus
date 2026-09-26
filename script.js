@@ -26,6 +26,15 @@ const storage = {
 };
 
 const { stops, routes, alerts } = window.FindSuperBusData;
+
+Object.values(routes).forEach(route => {
+  route.duration = route.durationMinutes; 
+  route.fare = Math.round((10 + route.distanceKm * 0.5) / 5) * 5;
+  const hrs = Math.floor(route.durationMinutes / 60);
+  const mins = route.durationMinutes % 60;
+  route.formattedDuration = hrs > 0 ? (mins > 0 ? `${hrs} hr ${mins} min` : `${hrs} hr`) : `${mins} min`;
+});
+
 const defaultSettings = { theme: 'dark', highContrast: false, largeText: false, reducedMotion: false, notifications: true, accessibleFirst: false };
 let settings = { ...defaultSettings, ...storage.get('superbus-settings', {}) };
 let selectedRoute = '12';
@@ -48,7 +57,7 @@ function mountSharedChrome() {
   const footer = $('#site-footer');
   if (footer) footer.innerHTML = `<footer class="site-footer"><div class="section-wrap footer-inner"><a class="brand" href="index.html"><span class="brand-mark"><span></span><span></span><span></span></span><span>Find SuperBus</span></a><nav class="footer-links" aria-label="Footer navigation"><a href="index.html">Home</a><a href="find-bus.html">Find Bus</a><a href="departures.html">Departures</a><a href="journey-planner.html">Journey Planner</a><a href="favorites.html">Favorites</a><a href="about.html">About</a><a href="settings.html">Settings</a></nav><span>Find your bus. Find your route. Travel smarter.</span><span class="footer-status"><span></span> OFFLINE DEMO</span><span>Student Project · Simulated Transport Data</span><span>© 2026 Find SuperBus</span></div></footer>`;
   const overlays = $('#shared-overlays');
-  if (overlays) overlays.innerHTML = `<div class="modal-backdrop" id="bus-detail-modal" hidden><section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="detail-title"><button class="modal-close" data-close-modal="bus-detail-modal" type="button" aria-label="Close bus details">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Simulated bus details</p><h2 id="detail-title">Bus 12</h2><p class="modal-route" id="detail-route"></p><dl class="detail-list"><div><dt>Via</dt><dd id="detail-via"></dd></div><div><dt>Stop</dt><dd id="detail-stop"></dd></div><div><dt>Departure</dt><dd id="detail-time"></dd></div><div><dt>Estimated arrival</dt><dd id="detail-arrival"></dd></div><div><dt>Travel time</dt><dd id="detail-duration"></dd></div><div><dt>Fare</dt><dd id="detail-fare"></dd></div><div><dt>Accessibility</dt><dd id="detail-accessibility"></dd></div><div><dt>Current status</dt><dd id="detail-status"></dd></div></dl><p class="detail-seats" id="detail-seats"></p><div class="modal-actions"><button class="button button-dark" id="detail-view-seats" type="button">Select Seat</button><button class="text-button" id="detail-favorite" type="button">Add Favorite</button><button class="text-button" data-close-modal="bus-detail-modal" type="button">Close</button></div></section></div><div class="modal-backdrop" id="pass-modal" hidden><section class="modal-card pass-modal-card" role="dialog" aria-modal="true" aria-labelledby="pass-title"><button class="modal-close" data-close-modal="pass-modal" type="button" aria-label="Close digital pass">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Digital pass</p><h2 id="pass-title">FIND SUPERBUS</h2><div class="pass-large"><strong>DIGITAL BUS PASS</strong><span>Demo Passenger</span><span>Monthly Pass · Local demonstration</span><span>Pass ID: FSB-DEMO-001</span></div><button class="button button-dark" data-close-modal="pass-modal" type="button">Close</button></section></div><aside class="side-panel" id="notifications-panel" hidden><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Inbox</p><h2>Notifications</h2></div><button class="modal-close" data-close-panel="notifications-panel" type="button" aria-label="Close notifications">&times;</button></div><div id="notification-list" class="notification-list"></div><button class="text-button" id="mark-read" type="button">Mark all as read</button></aside>`;
+  if (overlays) overlays.innerHTML = `<div class="modal-backdrop" id="bus-detail-modal" hidden><section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="detail-title"><button class="modal-close" data-close-modal="bus-detail-modal" type="button" aria-label="Close bus details">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Simulated bus details</p><h2 id="detail-title">Bus 12</h2><p class="modal-route" id="detail-route"></p><dl class="detail-list"><div><dt>Via</dt><dd id="detail-via"></dd></div><div><dt>Distance</dt><dd id="detail-distance"></dd></div><div><dt>Estimated Time</dt><dd id="detail-duration"></dd></div><div><dt>Stops</dt><dd id="detail-stops"></dd></div><div><dt>Departure</dt><dd id="detail-time"></dd></div><div><dt>Estimated Arrival</dt><dd id="detail-arrival"></dd></div><div><dt>Estimated Demo Fare</dt><dd id="detail-fare"></dd></div><div><dt>Current Stop</dt><dd id="detail-current-stop"></dd></div><div><dt>Next Stop</dt><dd id="detail-next-stop"></dd></div><div><dt>Accessibility</dt><dd id="detail-accessibility"></dd></div><div><dt>Status</dt><dd id="detail-status"></dd></div></dl><div style="margin:1.5rem 0;padding:1rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);"><strong style="display:block;font-size:0.75rem;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:1rem;">ROUTE RANGE &amp; STOPS</strong><div id="detail-timeline" style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.9rem;font-weight:600;"></div></div><p class="detail-seats" id="detail-seats"></p><div class="modal-actions"><button class="button button-dark" id="detail-view-seats" type="button">Select Seat</button><button class="text-button" id="detail-favorite" type="button">Add Favorite</button><button class="text-button" data-close-modal="bus-detail-modal" type="button">Close</button></div></section></div><div class="modal-backdrop" id="pass-modal" hidden><section class="modal-card pass-modal-card" role="dialog" aria-modal="true" aria-labelledby="pass-title"><button class="modal-close" data-close-modal="pass-modal" type="button" aria-label="Close digital pass">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Digital pass</p><h2 id="pass-title">FIND SUPERBUS</h2><div class="pass-large"><strong>DIGITAL BUS PASS</strong><span>Demo Passenger</span><span>Monthly Pass · Local demonstration</span><span>Pass ID: FSB-DEMO-001</span></div><button class="button button-dark" data-close-modal="pass-modal" type="button">Close</button></section></div><aside class="side-panel" id="notifications-panel" hidden><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Inbox</p><h2>Notifications</h2></div><button class="modal-close" data-close-panel="notifications-panel" type="button" aria-label="Close notifications">&times;</button></div><div id="notification-list" class="notification-list"></div><button class="text-button" id="mark-read" type="button">Mark all as read</button></aside>`;
   if (!$('#app-loader')) document.body.insertAdjacentHTML('afterbegin', '<div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>');
 }
 
@@ -58,7 +67,8 @@ function renderDepartureRows(target = $('#departure-list'), routeNumbers = Objec
     const route = routes[number];
     const accessText = route.accessible ? 'Wheelchair accessible' : 'Limited accessibility';
     const badge = number === '21' || number === '18' ? 'blue' : number === '7' || number === '9' || number === '31' ? 'yellow' : 'coral';
-    return `<article class="departure-row" data-route="${number}" data-tags="${route.tags.join(' ')}"><div class="route-badge badge-${badge}">${String(number).padStart(2, '0')}</div><div class="departure-info"><strong>${route.from} <span aria-hidden="true">&#8594;</span> ${route.to}</strong><span>via ${route.via} · Stop ${route.stop}</span></div><div class="departure-time"><strong data-minutes="${route.minutes}">${route.minutes} min</strong><span>${route.time}</span></div><div class="accessibility${route.accessible ? '' : ' muted'}" aria-label="${accessText}">&#9673;</div><button class="favorite-button" data-favorite="${number}" aria-label="Favorite bus ${number}" type="button">&#9734;</button><button class="row-arrow" aria-label="View route ${number}" type="button">&#8594;</button></article>`;
+    const availableSeats = route.total - route.occupied;
+    return `<article class="departure-row" data-route="${number}" data-tags="${route.tags.join(' ')}"><div class="route-badge badge-${badge}">${String(number).padStart(2, '0')}</div><div class="departure-info"><strong>${route.from} <span aria-hidden="true">&#8594;</span> ${route.to}</strong><span style="display:flex;gap:0.5rem;flex-wrap:wrap;color:var(--text-muted);font-size:0.85rem"><span>📍 ${route.distanceKm} km</span><span>◷ ${route.formattedDuration}</span><span>● ${route.stops.length} stops</span><span>💺 ${availableSeats} seats</span></span></div><div class="departure-time"><strong data-minutes="${route.minutes}">${route.minutes} min</strong><span>${route.time}</span></div><div class="accessibility${route.accessible ? '' : ' muted'}" aria-label="${accessText}">&#9673;</div><button class="favorite-button" data-favorite="${number}" aria-label="Favorite bus ${number}" type="button">&#9734;</button><button class="row-arrow" aria-label="View route ${number}" type="button">&#8594;</button></article>`;
   }).join('');
 }
 
@@ -214,17 +224,22 @@ function seatSummary(busNumber) {
   const route = routes[busNumber];
   const selected = selectedSeatNumbers(busNumber);
   const available = route.total - route.occupied - selected.length;
-  return `${route.total} total · ${route.occupied} occupied · ${available} available${selected.length ? ` · ${selected.length} selected` : ''}`;
+  const occupiedTotal = route.occupied + selected.length;
+  const percentage = Math.round((occupiedTotal / route.total) * 100);
+  return `${available} / ${route.total} available · ${percentage}% occupied${selected.length ? ` · ${selected.length} selected` : ''}`;
 }
 
 function currentDepartureStatus(busNumber, countdownText) {
   const route = routes[busNumber];
-  if (!route) return 'On time';
-  if (route.total - route.occupied - selectedSeatNumbers(busNumber).length <= 0) return 'Full';
-  if (countdownText === 'Departing') return 'Departing';
+  if (!route) return 'SEATS AVAILABLE';
+  const available = route.total - route.occupied - selectedSeatNumbers(busNumber).length;
+  if (available <= 0) return 'FULL';
+  if (available <= 5) return 'LIMITED SEATS';
+  if (countdownText === 'Departing') return 'DEPARTED';
   const minutes = Number.parseInt(countdownText, 10);
-  if (route.status === 'On time' && Number.isFinite(minutes) && minutes <= 3) return 'Arriving soon';
-  return route.status;
+  if (Number.isFinite(minutes) && minutes <= 3) return 'ARRIVING SOON';
+  if (route.status.toUpperCase() === 'IN TRANSIT' || route.status.toUpperCase() === 'MOVING') return 'IN TRANSIT';
+  return 'SEATS AVAILABLE';
 }
 
 function setDepartureStatus(row, status) {
@@ -240,7 +255,7 @@ function routeResult(routeNumber) {
   const travelDate = $('#planner-date')?.value;
   const card = document.createElement('article');
   card.className = 'planner-result';
-  card.innerHTML = `<div><strong>BUS ${routeNumber}</strong><p>${route.from} &rarr; ${route.to}</p><small>Via ${route.via} · Stop ${route.stop}${travelDate ? ` · ${travelDate}` : ''}</small></div><span>Departs ${route.time} · ${route.duration} min<br>₹${route.fare} demo<br>${route.total} total · ${route.occupied} occupied · ${available} available${selected.length ? ` (${selected.length} selected)` : ''}<br>${route.accessible ? 'Wheelchair accessible' : 'Limited accessibility'}</span><button class="text-button planner-view-route" data-route="${routeNumber}" type="button">View Bus</button>`;
+  card.innerHTML = `<div><strong>BUS ${routeNumber}</strong><p>${route.from} &rarr; ${route.to}</p><small>Via ${route.via} · ${route.distanceKm} km · ${route.formattedDuration}</small></div><div style="margin: 0.5rem 0; font-size: 0.9rem; line-height: 1.4;">Departure: ${route.time}<br>Estimated arrival: ${estimatedArrival(route.time, route.duration)}<br>Stops: ${route.stops.length}<br>Estimated demo fare: ₹${route.fare}<br>Seats: ${available} available<br>Status: ${currentDepartureStatus(routeNumber, '0 min')}</div><button class="text-button planner-view-route" data-route="${routeNumber}" type="button">View Details</button><button class="text-button" type="button" style="margin-left: 0.5rem;" onclick="openBusDetails('${routeNumber}')">Select Seat</button>`;
   return card;
 }
 
@@ -385,8 +400,9 @@ function openBusDetails(busNumber) {
   const available = route.total - route.occupied - selectedSeatNumbers(busNumber).length;
   const rowStatus = $(`.departure-row[data-route="${busNumber}"] .route-status`)?.textContent || route.status;
   const status = available === 0 ? 'Full' : rowStatus;
-  const values = { '#detail-title': `Bus ${busNumber}`, '#detail-route': `${route.from} → ${route.to}`, '#detail-via': route.via, '#detail-stop': route.stop, '#detail-time': route.time, '#detail-arrival': estimatedArrival(route.time, route.duration), '#detail-duration': `${route.duration} minutes`, '#detail-fare': `₹${route.fare}`, '#detail-accessibility': route.accessible ? 'Wheelchair accessible' : 'Limited accessibility', '#detail-status': status, '#detail-seats': seatSummary(busNumber) };
+  const values = { '#detail-title': `Bus ${busNumber}`, '#detail-route': `${route.from} → ${route.to}`, '#detail-via': route.via, '#detail-distance': `${route.distanceKm} km`, '#detail-duration': route.formattedDuration, '#detail-stops': route.stops.length, '#detail-time': route.time, '#detail-arrival': estimatedArrival(route.time, route.duration), '#detail-fare': `₹${route.fare}`, '#detail-current-stop': route.stops[0], '#detail-next-stop': route.stops[1] || route.to, '#detail-accessibility': route.accessible ? 'Wheelchair accessible' : 'Limited accessibility', '#detail-status': status, '#detail-seats': seatSummary(busNumber) };
   Object.entries(values).forEach(([selector, value]) => { if ($(selector)) $(selector).textContent = value; });
+  if ($('#detail-timeline')) $('#detail-timeline').innerHTML = route.stops.map((stop, i) => `<div>${stop.toUpperCase()}</div>${i < route.stops.length - 1 ? '<div style="color:var(--text-muted);font-weight:normal;padding-left:0.25rem;">↓</div>' : ''}`).join('');
   if ($('#detail-favorite')) $('#detail-favorite').textContent = storage.get('superbus-favorites', []).includes(String(busNumber)) ? 'Favorited' : 'Add Favorite';
   const modal = $('#bus-detail-modal');
   if (modal) modal.hidden = false;
@@ -603,8 +619,13 @@ function startHeroBusAnimation() {
       liveStatus.textContent = status;
       liveLabelHalfWidth = liveLabel.offsetWidth / 2;
     }
-    const label = `Bus 12 · ${status} · Kakinada to Rajahmundry`;
+    const distanceRemaining = Math.max(0, Math.round(55 * (1 - lastProgress)));
+    const speed = status === 'Moving' ? (lastProgress < 0.1 || lastProgress > 0.9 ? 18 : 42) : (status.includes('Approaching') ? 15 : 0);
+    const label = `Bus 12 · ${status} · ${distanceRemaining} km remaining · ${speed} km/h`;
     if (positioner.getAttribute('aria-label') !== label) positioner.setAttribute('aria-label', label);
+    if ($('#hero-live-status')) $('#hero-live-status').textContent = status.toUpperCase();
+    if ($('#hero-live-speed')) $('#hero-live-speed').textContent = `${speed} km/h`;
+    if ($('#hero-live-distance')) $('#hero-live-distance').textContent = `${distanceRemaining} km`;
   }
 
   function setApproachingStop(index) {

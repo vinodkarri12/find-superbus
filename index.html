@@ -23,6 +23,17 @@
           <button class="button button-dark" id="find-my-bus" type="button">Find My Bus <span aria-hidden="true">&#8594;</span></button>
           <a class="text-link text-button-link" href="journey-planner.html">Plan My Journey <span aria-hidden="true">&#8595;</span></a>
         </div>
+        <div class="live-demo-route" style="margin-top: 1.5rem; padding: 1rem; background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); max-width: 300px; font-size: 0.9rem;">
+          <strong style="display:block; color:var(--text-muted); font-size: 0.75rem; letter-spacing: 0.05em; margin-bottom: 0.5rem;">LIVE DEMO ROUTE</strong>
+          <div style="font-weight: 600; margin-bottom: 0.25rem;">BUS 12</div>
+          <div style="margin-bottom: 0.5rem; color: var(--text-muted);">Kakinada &rarr; Rajahmundry</div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <span style="color: var(--green);">● <span id="hero-live-status">IN TRANSIT</span></span>
+            <span id="hero-live-speed">42 km/h</span>
+            <span id="hero-live-seats">18 seats</span>
+          </div>
+          <div style="margin-top: 0.5rem; color: var(--text-muted);">Distance remaining: <span id="hero-live-distance">18 km</span></div>
+        </div>
         <div class="hero-quick-search" id="hero-quick-search" hidden>
           <label>From<select id="quick-from"><option value="">Choose origin</option></select></label>
           <label>To<select id="quick-to"><option value="">Choose destination</option></select></label>
