@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search simulated Andhra Pradesh demonstration bus routes.">
+  <title>Find a Bus | Find SuperBus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="find-bus">
+  <div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>
+  <div id="site-header"></div>
+  <main id="top">
+    <section class="page-intro section-wrap"><p class="eyebrow"><span class="eyebrow-dot"></span> Simulated routes</p><h1>Find a bus</h1><p>Search local demonstration routes, compare sample departures, and select seats. No live transit feed is connected.</p></section>
+    <section class="departures section-wrap" id="departures">
+      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Route search</p><h2>Available buses</h2></div><span class="demo-label">DEMO DATA</span></div>
+      <div class="schedule-tools">
+        <label class="search-box"><span aria-hidden="true">&#8981;</span><input id="route-search" type="search" placeholder="Search buses, routes or stops" aria-label="Search buses, routes or stops"></label>
+        <div class="filter-tabs" role="group" aria-label="Filter departures"><button class="filter-tab active" data-filter="all" type="button">All routes</button><button class="filter-tab" data-filter="frequent" type="button">Frequent</button><button class="filter-tab" data-filter="accessible" type="button">Accessible</button></div>
+        <div class="route-filters" aria-label="Additional bus filters">
+          <label>From<select id="filter-from"><option value="">Any source</option></select></label>
+          <label>To<select id="filter-to"><option value="">Any destination</option></select></label>
+          <label>Status<select id="filter-status"><option value="all">Any status</option><option value="on-time">On time</option><option value="arriving-soon">Arriving</option><option value="departing">Departing</option><option value="delayed">Delayed</option><option value="limited-seating">Limited seating</option><option value="full">Full</option></select></label>
+          <label>Access<select id="filter-accessibility"><option value="all">Any access</option><option value="accessible">Accessible</option><option value="limited">Limited</option></select></label>
+          <label>Saved<select id="filter-favorites"><option value="all">All buses</option><option value="favorites">Favorites</option></select></label>
+        </div>
+      </div>
+      <div class="nearby-locations" aria-label="Nearby demonstration locations"><strong>Nearby locations</strong><div class="nearby-location-list"><button class="nearby-chip" data-location="Kakinada" type="button">Kakinada</button><button class="nearby-chip" data-location="Samalkota" type="button">Samalkota</button><button class="nearby-chip" data-location="Pithapuram" type="button">Pithapuram</button><button class="nearby-chip" data-location="Peddapuram" type="button">Peddapuram</button><button class="nearby-chip" data-location="Anaparthi" type="button">Anaparthi</button><button class="nearby-chip" data-location="Rajahmundry" type="button">Rajahmundry</button><button class="nearby-chip" data-location="Amalapuram" type="button">Amalapuram</button></div></div>
+      <div class="departure-list" id="departure-list"></div>
+      <p class="no-results" id="no-results" hidden><strong>No buses found</strong><span>Try another location or route.</span></p>
+    </section>
+    <section class="seat-section section-wrap" id="seat-availability">
+      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Demo seat capacity</p><h2>Seat availability</h2></div><div class="bus-selected">Bus <strong id="selected-bus">12</strong></div></div>
+      <div class="seat-card">
+        <div class="seat-summary"><div class="capacity-circle"><strong id="empty-seats">18</strong><span>available</span></div><div class="capacity-info"><h3 id="seat-status">Seats available</h3><p><strong id="occupied-seats">12</strong> occupied of <strong id="total-seats">30</strong> seats</p><div class="capacity-bar"><span id="capacity-fill"></span></div><small id="capacity-percent">40% occupied</small><p class="seat-feedback" id="seat-feedback" aria-live="polite">No seats selected</p></div></div>
+        <div class="seat-layout"><div class="driver-area"><span>DRIVER</span></div><div id="seat-map" class="seat-map"></div></div>
+        <div class="seat-legend"><span><i class="seat available"></i> Available</span><span><i class="seat occupied"></i> Occupied</span><span><i class="seat selected"></i> Selected</span></div>
+        <div class="seat-confirm-row"><p>Selected seats: <strong id="selected-seat-names">None</strong></p><button class="button button-dark" id="confirm-seats" type="button" disabled>Confirm Seat</button></div><p class="seat-confirmation" id="seat-confirmation" role="status" hidden></p>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div><div id="shared-overlays"></div>
+  <script src="js/data.js"></script><script src="script.js"></script>
+</body>
+</html>

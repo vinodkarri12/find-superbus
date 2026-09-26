@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View saved Find SuperBus demonstration routes and recent searches.">
+  <title>Favorites | Find SuperBus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="favorites">
+  <div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>
+  <div id="site-header"></div>
+  <main id="top">
+    <section class="page-intro section-wrap"><p class="eyebrow"><span class="eyebrow-dot"></span> Your saved network</p><h1>Your Favorites</h1><p>Saved buses and routes stay in this browser using local demo storage.</p></section>
+    <section class="dashboard-grid section-wrap favorites-page-grid" id="favorites">
+      <div class="dashboard-panel favorites-panel"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Favorite buses</p><h2>Saved routes</h2></div></div><div id="favorites-list" class="favorites-list"></div></div>
+      <div class="dashboard-panel history-panel"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Local memory</p><h2>Recent searches</h2></div><button class="text-button" id="clear-history" type="button">Clear history</button></div><div id="history-list" class="history-list"></div></div>
+    </section>
+    <section class="section-wrap dashboard-panel favorites-travel-summary"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Local activity</p><h2>Travel summary</h2></div><span class="demo-label">STORED ON THIS DEVICE</span></div><div class="travel-summary" aria-label="Local travel summary"><div><strong id="today-trips">0</strong><span>Today's demo trips</span></div><div><strong id="favorite-count">0</strong><span>Favorite routes</span></div><div><strong id="seats-checked">0</strong><span>Seats checked</span></div><div><strong id="recent-search-count">0</strong><span>Recent searches</span></div></div></section>
+  </main>
+  <div id="site-footer"></div><div id="shared-overlays"></div>
+  <script src="js/data.js"></script><script src="script.js"></script>
+</body>
+</html>

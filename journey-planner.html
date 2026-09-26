@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plan a sample journey using Find SuperBus local demonstration routes.">
+  <title>Journey Planner | Find SuperBus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="journey-planner">
+  <div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>
+  <div id="site-header"></div>
+  <main id="top">
+    <section class="page-intro section-wrap"><p class="eyebrow"><span class="eyebrow-dot"></span> Offline journey planning</p><h1>Plan your journey</h1><p>Compare matching sample routes by origin, destination, date, and requested departure time.</p></section>
+    <section class="planner section-wrap" id="journey-planner">
+      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Route options</p><h2>Choose your trip</h2></div><span class="demo-label">DEMO DATA</span></div>
+      <div class="planner-card">
+        <label>From<select id="planner-from"><option value="">Select starting point</option></select></label>
+        <label>To<select id="planner-to"><option value="">Select destination</option></select></label>
+        <label>Date<input id="planner-date" type="date"></label>
+        <label>Time<input id="planner-time" type="time" value="06:30"></label>
+        <button class="button button-dark" id="find-routes" type="button">Plan Journey <span aria-hidden="true">&#8594;</span></button>
+      </div>
+      <div class="planner-results" id="planner-results" aria-live="polite"></div>
+    </section>
+    <section class="tools-section section-wrap"><div class="tool-card fare-card" id="fare-calculator"><p class="eyebrow"><span class="eyebrow-dot"></span> Demo fare calculator</p><h2>Estimate your fare</h2><div class="tool-fields"><select id="fare-from" aria-label="Fare starting point"><option value="">From</option></select><select id="fare-to" aria-label="Fare destination"><option value="">To</option></select><select id="passenger-type" aria-label="Passenger type"><option value="adult">Adult</option><option value="student">Student</option><option value="child">Child</option><option value="senior">Senior</option></select><button class="button button-dark" id="calculate-fare" type="button">Calculate fare</button></div><div class="tool-output" id="fare-output">Choose two stops to calculate an estimated demo fare.</div></div></section>
+  </main>
+  <div id="site-footer"></div><div id="shared-overlays"></div>
+  <script src="js/data.js"></script><script src="script.js"></script>
+</body>
+</html>

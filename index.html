@@ -9,145 +9,63 @@
 
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="home">
   <div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Find SuperBus home">
-      <span class="brand-mark"><span></span><span></span><span></span></span>
-      <span>Find SuperBus</span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a class="active" href="#top">Home</a>
-      <a href="#departures">Find Bus</a>
-      <a href="#departures">Departures</a>
-      <a href="#journey-planner">Journey Planner</a>
-      <a href="#favorites">Favorites</a>
-      <a href="#about">About</a>
-      <button class="mobile-nav-action" data-open-panel="settings-panel" type="button">Settings</button>
-    </nav>
-    <button class="header-action" type="button" data-scroll-target="#journey-planner">Plan a trip <span aria-hidden="true">&#8599;</span></button>
-    <div class="header-tools">
-      <button class="icon-button" id="theme-toggle" type="button" aria-label="Switch theme">Light</button>
-      <button class="icon-button" id="notifications-toggle" type="button" aria-label="Open notifications">Bell <span class="notification-count" id="notification-count">3</span></button>
-      <button class="icon-button" id="settings-toggle" type="button" aria-label="Open settings">Settings</button>
-    </div>
-    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
-  </header>
+  <div id="site-header"></div>
 
   <main id="top">
     <section class="hero section-wrap">
       <div class="hero-copy">
         <p class="eyebrow"><span class="eyebrow-dot"></span> Your city, in motion</p>
         <h1>Find Your Bus.<br><em>Reach Your Destination.</em></h1>
-        <p class="hero-intro">Find SuperBus makes everyday travel easier with bus routes, live departures, seat availability and simple journey planning.</p>
+        <p class="hero-intro">Find nearby buses, check departures, view available seats, and plan your journey.</p>
         <div class="hero-actions">
-          <button class="button button-dark" type="button" data-scroll-target="#departures">Find My Bus <span aria-hidden="true">&#8594;</span></button>
-          <button class="text-link text-button-link" type="button" data-scroll-target="#journey-planner">Plan My Journey <span aria-hidden="true">&#8595;</span></button>
+          <button class="button button-dark" id="find-my-bus" type="button">Find My Bus <span aria-hidden="true">&#8594;</span></button>
+          <a class="text-link text-button-link" href="journey-planner.html">Plan My Journey <span aria-hidden="true">&#8595;</span></a>
+        </div>
+        <div class="hero-quick-search" id="hero-quick-search" hidden>
+          <label>From<select id="quick-from"><option value="">Choose origin</option></select></label>
+          <label>To<select id="quick-to"><option value="">Choose destination</option></select></label>
+          <button class="button button-dark" id="quick-find-buses" type="button">Find Buses <span aria-hidden="true">&#8594;</span></button>
+          <p id="quick-search-feedback" role="status" hidden></p>
         </div>
       </div>
       <div class="hero-visual" aria-label="Illustrated city bus route map">
-        <div class="visual-label label-top">LIVE NETWORK <strong>24°</strong></div>
+        <div class="visual-label label-top"><span class="status-pulse"></span> SIMULATED NETWORK <strong>AP</strong></div>
         <div class="map-grid"></div>
-        <div class="route route-one"><span class="route-node"></span><span class="route-node"></span><span class="route-node"></span></div>
+        <div class="route route-one"><span class="route-node" data-main-stop="0"></span><span class="route-node"></span><span class="route-node" data-main-stop="1"></span></div>
         <div class="route route-two"><span class="route-node"></span><span class="route-node"></span></div>
-        <div class="route route-three"><span class="route-node"></span><span class="route-node"></span><span class="route-node"></span></div>
-        <div class="map-place place-one">KAKINADA</div>
-        <div class="map-place place-two">ANAPARTHI</div>
-        <div class="map-place place-three">RAJAHMUNDRY</div>
-        <div class="bus-illustration"><span class="bus-window window-one"></span><span class="bus-window window-two"></span><span class="bus-window window-three"></span><span class="bus-wheel wheel-one"></span><span class="bus-wheel wheel-two"></span></div>
-        <div class="visual-label label-bottom"><span class="status-pulse"></span> NETWORK RUNNING <strong>06:42</strong></div>
+        <div class="route route-three"><span class="route-node"></span><span class="route-node" data-main-stop="2"></span><span class="route-node"></span></div>
+        <svg class="bus-route-overlay" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+          <path class="bus-route-leg bus-route-leg-one"></path>
+          <path class="bus-route-leg bus-route-leg-two"></path>
+          <path class="bus-secondary-route bus-secondary-route-green"></path>
+          <path class="bus-secondary-route bus-secondary-route-blue"></path>
+        </svg>
+        <div class="map-place place-one" data-main-stop="0">KAKINADA</div>
+        <div class="map-place place-two" data-main-stop="1">ANAPARTHI</div>
+        <div class="map-place place-three" data-main-stop="2">RAJAHMUNDRY</div>
+        <button class="bus-motion-position main-bus-position" type="button" title="Bus 12 · Kakinada → Rajahmundry" aria-label="Bus 12 · Moving from Kakinada to Rajahmundry" aria-pressed="false">
+          <span class="bus-illustration" aria-hidden="true"><span class="bus-window window-one"></span><span class="bus-window window-two"></span><span class="bus-window window-three"></span><span class="bus-wheel wheel-one"></span><span class="bus-wheel wheel-two"></span></span>
+          <span class="bus-live-label" aria-hidden="true"><span class="bus-live-dot"></span><span><strong>BUS 12</strong><small>Kakinada → Rajahmundry</small></span><em class="bus-live-status">Moving</em></span>
+        </button>
+        <span class="secondary-bus-position bus-07" title="Demo Bus 07 · Kakinada to Pithapuram" aria-hidden="true"><span class="secondary-bus-vehicle"><i></i><i></i><i></i></span></span>
+        <span class="secondary-bus-position bus-21" title="Demo Bus 21 · Kakinada to Amalapuram" aria-hidden="true"><span class="secondary-bus-vehicle"><i></i><i></i><i></i></span></span>
+        <div class="visual-label label-bottom"><span class="status-pulse"></span> DEMO DEPARTURES</div>
       </div>
     </section>
 
     <section class="network-strip" id="network">
       <div class="section-wrap strip-inner">
-        <div class="strip-heading"><span class="section-number">01</span><h2>The whole city,<br><em>connected.</em></h2></div>
-        <p>One network, thoughtfully mapped. From first light to last call, Find SuperBus brings the places you need closer together.</p>
-        <div class="network-stat"><strong>48</strong><span>routes<br>across the city</span></div>
+        <div class="strip-heading"><span class="section-number">01</span><h2>Andhra Pradesh,<br><em>connected.</em></h2></div>
+        <p>Explore demonstration routes across the Kakinada region and nearby Andhra Pradesh destinations. Times and service information are simulated.</p>
+        <div class="network-stat"><strong id="route-count">8</strong><span>demo routes<br>across the network</span></div>
       </div>
     </section>
 
-    <section class="planner section-wrap" id="journey-planner">
-      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Plan your journey</p><h2>Find your route</h2></div><span class="demo-label">OFFLINE DEMO</span></div>
-      <div class="planner-card">
-        <label>From<select id="planner-from"><option value="">Select starting point</option></select></label>
-        <label>To<select id="planner-to"><option value="">Select destination</option></select></label>
-        <button class="button button-dark" id="find-routes" type="button">Find routes <span aria-hidden="true">&#8594;</span></button>
-      </div>
-      <div class="planner-results" id="planner-results" aria-live="polite"></div>
-    </section>
-
-    <section class="departures section-wrap" id="departures">
-      <div class="section-heading">
-        <div><p class="eyebrow"><span class="eyebrow-dot"></span> Right now</p><h2>Next departures</h2></div>
-        <div class="live-indicator"><span></span> Live updates</div>
-      </div>
-      <div class="schedule-tools">
-        <label class="search-box"><span aria-hidden="true">&#8981;</span><input id="route-search" type="search" placeholder="Search by city, route or stop" aria-label="Search by city, route or stop"></label>
-        <div class="filter-tabs" role="group" aria-label="Filter departures"><button class="filter-tab active" data-filter="all" type="button">All routes</button><button class="filter-tab" data-filter="frequent" type="button">Frequent</button><button class="filter-tab" data-filter="accessible" type="button">Accessible</button></div>
-      </div>
-      <div class="departure-list" id="departure-list">
-        <article class="departure-row" data-route="12" data-tags="frequent accessible">
-          <div class="route-badge badge-coral">12</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Rajahmundry</strong><span>via Anaparthi &middot; Stop 08</span></div><div class="departure-time"><strong data-minutes="3">3 min</strong><span>06:45</span></div><div class="accessibility" aria-label="Wheelchair accessible">&#9673;</div><button class="favorite-button" data-favorite="12" aria-label="Favorite bus 12" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 12" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="7" data-tags="frequent">
-          <div class="route-badge badge-yellow">07</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Pithapuram</strong><span>via Samalkota &middot; Stop 14</span></div><div class="departure-time"><strong data-minutes="8">8 min</strong><span>06:50</span></div><div class="accessibility muted" aria-label="Limited accessibility">&#9673;</div><button class="favorite-button" data-favorite="7" aria-label="Favorite bus 7" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 7" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="21" data-tags="accessible">
-          <div class="route-badge badge-blue">21</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Amalapuram</strong><span>via Ramachandrapuram &middot; Stop 03</span></div><div class="departure-time"><strong data-minutes="11">11 min</strong><span>06:53</span></div><div class="accessibility" aria-label="Wheelchair accessible">&#9673;</div><button class="favorite-button" data-favorite="21" aria-label="Favorite bus 21" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 21" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="15" data-tags="frequent accessible">
-          <div class="route-badge badge-coral">15</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Tuni</strong><span>via Pithapuram &middot; Stop 06</span></div><div class="departure-time"><strong data-minutes="12">12 min</strong><span>07:10</span></div><div class="accessibility" aria-label="Wheelchair accessible">&#9673;</div><button class="favorite-button" data-favorite="15" aria-label="Favorite bus 15" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 15" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="9" data-tags="frequent">
-          <div class="route-badge badge-yellow">09</div><div class="departure-info"><strong>Rajahmundry <span>&#8594;</span> Kakinada</strong><span>via Anaparthi &middot; Stop 11</span></div><div class="departure-time"><strong data-minutes="9">9 min</strong><span>07:25</span></div><div class="accessibility muted" aria-label="Limited accessibility">&#9673;</div><button class="favorite-button" data-favorite="9" aria-label="Favorite bus 9" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 9" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="18" data-tags="accessible frequent">
-          <div class="route-badge badge-blue">18</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Visakhapatnam</strong><span>via Tuni &middot; Stop 05</span></div><div class="departure-time"><strong data-minutes="15">15 min</strong><span>07:40</span></div><div class="accessibility" aria-label="Wheelchair accessible">&#9673;</div><button class="favorite-button" data-favorite="18" aria-label="Favorite bus 18" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 18" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="25" data-tags="frequent">
-          <div class="route-badge badge-coral">25</div><div class="departure-info"><strong>Kakinada <span>&#8594;</span> Yanam</strong><span>via Amalapuram &middot; Stop 09</span></div><div class="departure-time"><strong data-minutes="18">18 min</strong><span>08:00</span></div><div class="accessibility muted" aria-label="Limited accessibility">&#9673;</div><button class="favorite-button" data-favorite="25" aria-label="Favorite bus 25" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 25" type="button">&#8594;</button>
-        </article>
-        <article class="departure-row" data-route="31" data-tags="accessible">
-          <div class="route-badge badge-yellow">31</div><div class="departure-info"><strong>Peddapuram <span>&#8594;</span> Kakinada</strong><span>via Samalkota &middot; Stop 12</span></div><div class="departure-time"><strong data-minutes="20">20 min</strong><span>08:15</span></div><div class="accessibility" aria-label="Wheelchair accessible">&#9673;</div><button class="favorite-button" data-favorite="31" aria-label="Favorite bus 31" type="button">&#9734;</button><button class="row-arrow" aria-label="View route 31" type="button">&#8594;</button>
-        </article>
-      </div>
-      <p class="no-results" id="no-results" hidden>No departures match that search.</p>
-      <a class="view-all" href="#departures">View full timetable <span aria-hidden="true">&#8594;</span></a>
-    </section>
-
-    <section class="seat-section section-wrap" id="seat-availability">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow"><span class="eyebrow-dot"></span> Live bus capacity</p>
-          <h2>Seat availability</h2>
-        </div>
-        <div class="bus-selected">Bus <strong id="selected-bus">12</strong></div>
-      </div>
-
-      <div class="seat-card">
-        <div class="seat-summary">
-          <div class="capacity-circle"><strong id="empty-seats">18</strong><span>empty</span></div>
-          <div class="capacity-info">
-            <h3 id="seat-status">Seats available</h3>
-            <p><strong id="occupied-seats">12</strong> occupied of <strong id="total-seats">30</strong> seats</p>
-            <div class="capacity-bar"><span id="capacity-fill"></span></div>
-            <small id="capacity-percent">40% occupied</small>
-            <p class="seat-feedback" id="seat-feedback" aria-live="polite">No seats selected</p>
-          </div>
-        </div>
-
-        <div class="seat-layout">
-          <div class="driver-area"><span>DRIVER</span></div>
-          <div id="seat-map" class="seat-map"></div>
-        </div>
-
-        <div class="seat-legend">
-          <span><i class="seat available"></i> Available</span>
-          <span><i class="seat occupied"></i> Occupied</span>
-          <span><i class="seat selected"></i> Selected</span>
-        </div>
-      </div>
+    <section class="popular-routes section-wrap" id="popular-routes">
+      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Popular demo routes</p><h2>Start with a familiar trip</h2></div><a class="view-all" href="find-bus.html">Find all buses <span aria-hidden="true">&#8594;</span></a></div>
+      <div class="popular-route-list" id="popular-route-list"></div>
     </section>
 
     <section class="dashboard-grid section-wrap">
@@ -156,38 +74,25 @@
         <div id="alert-list" class="alert-list"></div>
       </div>
       <div class="dashboard-panel route-map-panel" id="route-map">
-        <div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Live network</p><h2>Route map</h2></div><span class="demo-label">BUS <strong id="map-bus">12</strong></span></div>
-        <div class="offline-map"><div class="map-line"></div><div class="map-station station-harbor">Kakinada</div><div class="map-station station-central">Anaparthi</div><div class="map-station station-loop">Rajahmundry</div><div class="map-station station-market">Samalkota</div></div>
+        <div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Demo route</p><h2>Route map</h2></div><span class="demo-label">BUS <strong id="map-bus">12</strong></span></div>
+        <div class="offline-map"><div class="map-line"></div><div class="map-station station-kakinada">Kakinada</div><div class="map-station station-anaparthi">Anaparthi</div><div class="map-station station-rajahmundry">Rajahmundry</div><div class="map-station station-samalkota">Samalkota</div></div>
         <div class="next-stop"><span>CURRENT BUS</span><strong>Bus <b id="next-bus">12</b></strong><p>Current stop: <b id="current-stop">Anaparthi</b></p><p>Next stop: <b id="next-stop-name">Rajahmundry</b> <em id="next-eta">3 min</em></p></div>
       </div>
     </section>
 
+    <section class="home-nearby section-wrap" id="home-nearby"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Nearby demo locations</p><h2>Explore the network</h2></div><span class="demo-label">NO GPS USED</span></div><div class="nearby-location-list" id="home-nearby-list"></div></section>
+
     <section class="tools-section section-wrap">
-      <div class="tool-card fare-card" id="fare-calculator"><p class="eyebrow"><span class="eyebrow-dot"></span> Fare calculator</p><h2>Estimate your ride</h2><div class="tool-fields"><select id="fare-from" aria-label="Fare starting point"><option value="">From</option></select><select id="fare-to" aria-label="Fare destination"><option value="">To</option></select><button class="button button-dark" id="calculate-fare" type="button">Calculate fare</button></div><div class="tool-output" id="fare-output">Choose two stops to calculate a local demo fare.</div></div>
-      <div class="tool-card stats-card" id="travel-statistics"><p class="eyebrow"><span class="eyebrow-dot"></span> Your travel</p><h2>Small trips add up.</h2><div class="stats-list"><div><strong data-counter="24">0</strong><span>Trips</span></div><div><strong data-counter="126">0</strong><span>Distance km</span></div><div><strong data-counter="8.5">0</strong><span>Hours saved</span></div><div><strong data-counter="18.4">0</strong><span>kg CO2 saved</span></div></div><small>Illustrative demo statistics</small></div>
+      <div class="tool-card stats-card" id="travel-statistics"><p class="eyebrow"><span class="eyebrow-dot"></span> Demo network</p><h2>Network at a glance.</h2><div class="stats-list"><div><strong id="active-buses" data-counter="0">0</strong><span>Active buses</span></div><div><strong id="available-seats" data-counter="0">0</strong><span>Available seats</span></div><div><strong id="route-total" data-counter="0">0</strong><span>Routes</span></div><div><strong id="nearby-stops" data-counter="0">0</strong><span>Stops</span></div></div><div class="travel-summary" aria-label="Local travel summary"><div><strong id="today-trips">0</strong><span>Today's demo trips</span></div><div><strong id="favorite-count">0</strong><span>Favorite routes</span></div><div><strong id="seats-checked">0</strong><span>Seats checked</span></div><div><strong id="recent-search-count">0</strong><span>Recent searches</span></div></div><small>Calculated from simulated route data</small></div>
       <div class="tool-card co2-card"><p class="eyebrow"><span class="eyebrow-dot"></span> Travel smarter</p><h2>Every shared ride counts.</h2><p>Public transport can reduce individual car trips.</p><label>Trips by bus<input id="co2-trips" type="number" min="0" value="10"></label><strong id="co2-output">Estimated CO2 saved: 7.2 kg</strong><small>Illustrative demo calculation</small></div>
       <div class="tool-card pass-card"><p class="eyebrow"><span class="eyebrow-dot"></span> Digital pass</p><h2>Find SuperBus pass</h2><div class="pass-preview"><strong>FIND SUPERBUS</strong><span>DIGITAL PASS</span><small>Demo Passenger &middot; Monthly</small></div><button class="button button-dark" id="show-pass" type="button">Show Digital Pass</button></div>
     </section>
 
-    <section class="dashboard-grid section-wrap secondary-tools" id="favorites">
-      <div class="dashboard-panel favorites-panel"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Saved routes</p><h2>My favorites</h2></div></div><div id="favorites-list" class="favorites-list"></div></div>
-      <div class="dashboard-panel history-panel"><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Local memory</p><h2>Recent searches</h2></div><button class="text-button" id="clear-history" type="button">Clear history</button></div><div id="history-list" class="history-list"></div></div>
-    </section>
-
-    <section class="about section-wrap" id="about">
-      <div class="about-card"><span class="section-number">02</span><h2>Good journeys<br>start with <em>good<br>information.</em></h2><p>We make the everyday trip feel a little more considered: fewer surprises, better connections, and a city that feels within reach.</p><a href="#network" class="text-link">How Find SuperBus works <span aria-hidden="true">&#8594;</span></a></div>
-      <div class="about-note"><span class="note-mark">↗</span><p>“Find your bus. Find your route. Travel smarter.”</p><span class="note-caption">THE FIND SUPERBUS PRINCIPLE</span></div>
-    </section>
   </main>
 
-  <div class="modal-backdrop" id="bus-detail-modal" hidden>
-    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="detail-title"><button class="modal-close" data-close-modal="bus-detail-modal" type="button" aria-label="Close bus details">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Find SuperBus details</p><h2 id="detail-title">Bus 12</h2><p class="modal-route" id="detail-route">Kakinada &rarr; Rajahmundry</p><dl class="detail-list"><div><dt>Via</dt><dd id="detail-via">Anaparthi</dd></div><div><dt>Stop</dt><dd id="detail-stop">08</dd></div><div><dt>Next departure</dt><dd id="detail-time">06:45</dd></div><div><dt>Travel time</dt><dd id="detail-duration">18 minutes</dd></div><div><dt>Fare</dt><dd id="detail-fare">₹20</dd></div><div><dt>Accessibility</dt><dd id="detail-accessibility">Wheelchair accessible</dd></div></dl><p class="detail-seats" id="detail-seats">18 available / 30 total</p><div class="modal-actions"><button class="button button-dark" id="detail-view-seats" type="button">View Seats</button><button class="text-button" id="detail-favorite" type="button">Add Favorite</button></div></section>
-  </div>
-  <div class="modal-backdrop" id="pass-modal" hidden><section class="modal-card pass-modal-card" role="dialog" aria-modal="true" aria-labelledby="pass-title"><button class="modal-close" data-close-modal="pass-modal" type="button" aria-label="Close digital pass">&times;</button><p class="eyebrow"><span class="eyebrow-dot"></span> Digital pass</p><h2 id="pass-title">FIND SUPERBUS</h2><div class="pass-large"><strong>DIGITAL BUS PASS</strong><span>Demo Passenger</span><span>Monthly Pass &middot; Valid until 30 Sep 2026</span><span>Pass ID: FSB-2026-001</span></div><button class="button button-dark" data-close-modal="pass-modal" type="button">Close</button></section></div>
-  <aside class="side-panel" id="notifications-panel" hidden><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Inbox</p><h2>Notifications</h2></div><button class="modal-close" data-close-panel="notifications-panel" type="button" aria-label="Close notifications">&times;</button></div><div id="notification-list" class="notification-list"></div><button class="text-button" id="mark-read" type="button">Mark all as read</button></aside>
-  <aside class="side-panel settings-panel" id="settings-panel" hidden><div class="panel-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Controls</p><h2>Settings</h2></div><button class="modal-close" data-close-panel="settings-panel" type="button" aria-label="Close settings">&times;</button></div><label class="setting-row">Theme<select id="theme-select"><option value="dark">Dark mode</option><option value="light">Light mode</option></select></label><label class="setting-row">Accessibility mode<input id="high-contrast" type="checkbox"></label><label class="setting-row">Large text<input id="large-text" type="checkbox"></label><label class="setting-row">Enable notifications<input id="enable-notifications" type="checkbox" checked></label><label class="setting-row">Accessible buses first<input id="accessible-first" type="checkbox"></label><button class="button button-dark" id="reset-settings" type="button">Reset all settings</button><button class="text-button danger-button" id="reset-demo" type="button">Reset demo data</button></aside>
-
-  <footer class="site-footer"><div class="section-wrap footer-inner"><a class="brand" href="#top"><span class="brand-mark"><span></span><span></span><span></span></span><span>Find SuperBus</span></a><span>Find your bus. Find your route. Travel smarter.</span><span class="footer-status"><span></span> OFFLINE DEMO</span><span>© 2026 Find SuperBus</span></div></footer>
-  <script src="script.js?v=3"></script>
+  <div id="shared-overlays"></div>
+  <div id="site-footer"></div>
+  <script src="js/data.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

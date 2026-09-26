@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View simulated bus departure information for the Find SuperBus demonstration.">
+  <title>Departures | Find SuperBus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="departures">
+  <div class="app-loader" id="app-loader"><strong>FIND SUPERBUS</strong><span>Finding your network...</span></div>
+  <div id="site-header"></div>
+  <main id="top">
+    <section class="page-intro section-wrap"><p class="eyebrow"><span class="eyebrow-dot"></span> Simulated schedule</p><h1>Live Departures</h1><p>Simulated departure information for demonstration. Times, status, and seat counts are sample data.</p></section>
+    <section class="departures section-wrap departure-board-section" id="departures">
+      <div class="section-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span> Kakinada region</p><h2>Departure board</h2></div><span class="demo-label">OFFLINE DEMO</span></div>
+      <div class="departure-table-wrap"><table class="departure-board"><thead><tr><th>Bus</th><th>Route</th><th>Departure</th><th>Status</th><th>Available seats</th><th>Action</th></tr></thead><tbody id="departure-board-body"></tbody></table></div>
+    </section>
+    <section class="network-strip"><div class="section-wrap strip-inner"><div class="strip-heading"><span class="section-number">01</span><h2>Sample times,<br><em>clear choices.</em></h2></div><p>Every departure shown here is simulated locally for the student project. It is not an official or real-time government timetable.</p><div class="network-stat"><strong id="route-count">8</strong><span>demo routes<br>in the network</span></div></div></section>
+  </main>
+  <div id="site-footer"></div><div id="shared-overlays"></div>
+  <script src="js/data.js"></script><script src="script.js"></script>
+</body>
+</html>
